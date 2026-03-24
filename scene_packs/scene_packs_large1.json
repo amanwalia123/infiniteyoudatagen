@@ -1,0 +1,828 @@
+{
+  "scene_packs": {
+    "nature_fantasy": {
+      "BIOME": [
+        {
+          "text": "enchanted forest",
+          "weight": 2.0
+        },
+        {
+          "text": "ancient grove",
+          "weight": 1.7
+        },
+        {
+          "text": "bioluminescent woodland",
+          "weight": 1.5
+        },
+        {
+          "text": "moss-carpeted glade",
+          "weight": 1.4
+        },
+        {
+          "text": "fairy-ring clearing",
+          "weight": 1.3
+        }
+      ],
+      "MICRO": [
+        {
+          "text": "crystal-clear river over textured, mossy boulders",
+          "weight": 1.9
+        },
+        {
+          "text": "gnarled roots, ferns, and slick stones",
+          "weight": 1.6
+        },
+        {
+          "text": "small stone footbridge over a brook",
+          "weight": 1.4
+        },
+        {
+          "text": "hollow stump with fungi shelves",
+          "weight": 1.3
+        },
+        {
+          "text": "fallen log with glowing mushrooms",
+          "weight": 1.3
+        },
+        {
+          "text": "tangled brambles with dew-dropped leaves",
+          "weight": 1.2
+        }
+      ],
+      "ATMOS": [
+        {
+          "text": "soft morning mist",
+          "weight": 1.7
+        },
+        {
+          "text": "sunbeams through canopy",
+          "weight": 1.5
+        },
+        {
+          "text": "drifting fireflies",
+          "weight": 1.3
+        },
+        {
+          "text": "cool emerald shade",
+          "weight": 1.2
+        },
+        {
+          "text": "dappled light and long shadows",
+          "weight": 1.2
+        }
+      ],
+      "TEXTURE": [
+        "leaf veins, bark furrows, and moss filaments are clearly resolved",
+        "river ripples and stone grain show crisp micro-contrast",
+        "fern fronds and pine needles retain definition across the frame",
+        "lichen patterns and wood grain remain readable at distance"
+      ]
+    },
+    "rainforest": {
+      "BIOME": [
+        {
+          "text": "tropical rainforest",
+          "weight": 1.8
+        },
+        {
+          "text": "montane cloud forest",
+          "weight": 1.6
+        },
+        {
+          "text": "lowland jungle",
+          "weight": 1.5
+        },
+        {
+          "text": "riverine rainforest",
+          "weight": 1.4
+        }
+      ],
+      "MICRO": [
+        {
+          "text": "buttress roots and mossy logs",
+          "weight": 1.7
+        },
+        {
+          "text": "lianas and bromeliads over slick stones",
+          "weight": 1.5
+        },
+        {
+          "text": "leaf-littered footpath and ferns",
+          "weight": 1.4
+        },
+        {
+          "text": "epiphytes clinging to damp trunks",
+          "weight": 1.3
+        },
+        {
+          "text": "boardwalk above murky stream",
+          "weight": 1.2
+        }
+      ],
+      "ATMOS": [
+        {
+          "text": "humid mist with diffuse light",
+          "weight": 1.6
+        },
+        {
+          "text": "sunshafts after rainfall",
+          "weight": 1.5
+        },
+        {
+          "text": "dripping canopy and soft patter",
+          "weight": 1.3
+        },
+        {
+          "text": "dense humidity and pale haze",
+          "weight": 1.2
+        }
+      ],
+      "TEXTURE": [
+        "water droplets on leaves remain distinct",
+        "moss cushions and leaf fibers retain clarity",
+        "bark textures and vines stay crisply defined",
+        "mud patterns and wet rock sheen remain readable"
+      ]
+    },
+    "coastal": {
+      "BIOME": [
+        {
+          "text": "rocky coastline",
+          "weight": 1.7
+        },
+        {
+          "text": "windswept beach dunes",
+          "weight": 1.6
+        },
+        {
+          "text": "tidal flats",
+          "weight": 1.4
+        },
+        {
+          "text": "sea cliff overlook",
+          "weight": 1.4
+        },
+        {
+          "text": "fishing harbor quay",
+          "weight": 1.2
+        }
+      ],
+      "MICRO": [
+        {
+          "text": "tidal pools among barnacled stones",
+          "weight": 1.7
+        },
+        {
+          "text": "weathered driftwood and sea grass",
+          "weight": 1.5
+        },
+        {
+          "text": "pebble strand and shell beds",
+          "weight": 1.4
+        },
+        {
+          "text": "kelp tangles across wet rock",
+          "weight": 1.3
+        },
+        {
+          "text": "rope bollards and mooring cleats",
+          "weight": 1.2
+        }
+      ],
+      "ATMOS": [
+        {
+          "text": "golden hour sea spray",
+          "weight": 1.5
+        },
+        {
+          "text": "overcast, moody surf",
+          "weight": 1.4
+        },
+        {
+          "text": "salt haze and low clouds",
+          "weight": 1.3
+        },
+        {
+          "text": "bright glare with crisp shadows",
+          "weight": 1.2
+        }
+      ],
+      "TEXTURE": [
+        "foam lace, wet rock sheen, and shell ridges remain crisp",
+        "sand grain and pebble facets retain definition",
+        "rope fibers and rusted fittings appear clearly resolved",
+        "sea grass blades and barnacle clusters stay legible"
+      ]
+    },
+    "desert": {
+      "BIOME": [
+        {
+          "text": "sandstone canyon",
+          "weight": 1.6
+        },
+        {
+          "text": "dune field",
+          "weight": 1.6
+        },
+        {
+          "text": "rocky desert plain",
+          "weight": 1.4
+        },
+        {
+          "text": "badlands ravines",
+          "weight": 1.3
+        }
+      ],
+      "MICRO": [
+        {
+          "text": "rippling dune crests and varnished rocks",
+          "weight": 1.6
+        },
+        {
+          "text": "cracked earth and wind-carved ridges",
+          "weight": 1.5
+        },
+        {
+          "text": "dry wash with polished stones",
+          "weight": 1.3
+        },
+        {
+          "text": "desert scrub and thorny branches",
+          "weight": 1.2
+        }
+      ],
+      "ATMOS": [
+        {
+          "text": "clear, hard sunlight",
+          "weight": 1.5
+        },
+        {
+          "text": "long blue shadows at dusk",
+          "weight": 1.4
+        },
+        {
+          "text": "heat shimmer at mid-day",
+          "weight": 1.2
+        },
+        {
+          "text": "distant dust plume",
+          "weight": 1.1
+        }
+      ],
+      "TEXTURE": [
+        "sand grains and rock striations remain razor-defined",
+        "eroded edges and pebbled crust retain clarity",
+        "crack networks and ripple marks stay legible",
+        "desert brush textures remain distinct at range"
+      ]
+    },
+    "alpine_winter": {
+      "BIOME": [
+        {
+          "text": "snow-covered alpine forest",
+          "weight": 1.6
+        },
+        {
+          "text": "glacial valley",
+          "weight": 1.5
+        },
+        {
+          "text": "mountain pass overlook",
+          "weight": 1.4
+        },
+        {
+          "text": "frozen lake shore",
+          "weight": 1.3
+        }
+      ],
+      "MICRO": [
+        {
+          "text": "pine boughs laden with snow",
+          "weight": 1.6
+        },
+        {
+          "text": "frosted rocks and ice-crusted reeds",
+          "weight": 1.4
+        },
+        {
+          "text": "wooden footbridge with hoarfrost",
+          "weight": 1.3
+        },
+        {
+          "text": "snowdrift ridges and wind carve",
+          "weight": 1.2
+        }
+      ],
+      "ATMOS": [
+        {
+          "text": "cold, crystalline air",
+          "weight": 1.5
+        },
+        {
+          "text": "sun dogs and glittering ice dust",
+          "weight": 1.3
+        },
+        {
+          "text": "soft overcast winter light",
+          "weight": 1.3
+        },
+        {
+          "text": "blue-hour glow",
+          "weight": 1.2
+        }
+      ],
+      "TEXTURE": [
+        "ice facets, snow crystal sparkle, and bark grain stay crisp",
+        "wind-scoured snow textures remain defined",
+        "frost filigree and ice bubbles retain clarity",
+        "pine needles and wood grain remain legible"
+      ]
+    },
+    "european_oldtown": {
+      "BIOME": [
+        {
+          "text": "cobblestoned old town",
+          "weight": 1.6
+        },
+        {
+          "text": "medieval market square",
+          "weight": 1.4
+        },
+        {
+          "text": "narrow stone alley",
+          "weight": 1.4
+        },
+        {
+          "text": "riverside promenade",
+          "weight": 1.3
+        }
+      ],
+      "MICRO": [
+        {
+          "text": "ivy-clad stone facades and timber frames",
+          "weight": 1.5
+        },
+        {
+          "text": "arched passageways and lanterns",
+          "weight": 1.5
+        },
+        {
+          "text": "cobblestone patterns and wrought iron railings",
+          "weight": 1.4
+        },
+        {
+          "text": "balconies with flower boxes",
+          "weight": 1.2
+        }
+      ],
+      "ATMOS": [
+        {
+          "text": "cloudy soft light",
+          "weight": 1.3
+        },
+        {
+          "text": "warm window glows at dusk",
+          "weight": 1.2
+        },
+        {
+          "text": "gentle morning haze",
+          "weight": 1.2
+        },
+        {
+          "text": "clear sky with crisp contrast",
+          "weight": 1.1
+        }
+      ],
+      "TEXTURE": [
+        "cobblestones, mortar lines, and brick bond remain readable",
+        "wrought iron scrollwork stays sharp",
+        "plaster texture and wood grain remain defined",
+        "roof tiles and stone joints stay legible at distance"
+      ]
+    },
+    "urban_cyber": {
+      "BIOME": [
+        {
+          "text": "neon-lit downtown street",
+          "weight": 1.7
+        },
+        {
+          "text": "glass-and-steel city district",
+          "weight": 1.6
+        },
+        {
+          "text": "elevated concourse",
+          "weight": 1.4
+        },
+        {
+          "text": "arcology plaza",
+          "weight": 1.3
+        }
+      ],
+      "MICRO": [
+        {
+          "text": "reflections across glass facades and wet pavement",
+          "weight": 1.7
+        },
+        {
+          "text": "LED billboards, signage, and metal cladding",
+          "weight": 1.5
+        },
+        {
+          "text": "aerial walkways and window grids",
+          "weight": 1.3
+        },
+        {
+          "text": "vent grilles, conduit runs, and junction boxes",
+          "weight": 1.2
+        }
+      ],
+      "ATMOS": [
+        {
+          "text": "neon haze after rain",
+          "weight": 1.5
+        },
+        {
+          "text": "blue-purple ambient glow",
+          "weight": 1.4
+        },
+        {
+          "text": "vapor and light bloom around signs",
+          "weight": 1.2
+        },
+        {
+          "text": "crisp day air with vivid reflections",
+          "weight": 1.2
+        }
+      ],
+      "TEXTURE": [
+        "building edges, signage, and window frames remain crisp",
+        "glass seams and architectural lines are razor-defined",
+        "metal panels, rivets, and pavement texture stay sharp",
+        "distant skyline retains structural detail"
+      ]
+    },
+    "industrial": {
+      "BIOME": [
+        {
+          "text": "abandoned brick factory",
+          "weight": 1.5
+        },
+        {
+          "text": "steel foundry catwalks",
+          "weight": 1.4
+        },
+        {
+          "text": "shipyard drydock",
+          "weight": 1.3
+        },
+        {
+          "text": "power substation yard",
+          "weight": 1.2
+        }
+      ],
+      "MICRO": [
+        {
+          "text": "rusted pipes, grates, and riveted beams",
+          "weight": 1.7
+        },
+        {
+          "text": "oil-slick concrete and mesh flooring",
+          "weight": 1.5
+        },
+        {
+          "text": "cable trays and valve clusters",
+          "weight": 1.4
+        },
+        {
+          "text": "gantry rails and chain hoists",
+          "weight": 1.3
+        }
+      ],
+      "ATMOS": [
+        {
+          "text": "dust in sunbeams",
+          "weight": 1.3
+        },
+        {
+          "text": "cool industrial fluorescents",
+          "weight": 1.2
+        },
+        {
+          "text": "warm sodium vapor lamps",
+          "weight": 1.2
+        },
+        {
+          "text": "even overcast from clerestory windows",
+          "weight": 1.1
+        }
+      ],
+      "TEXTURE": [
+        "rust flakes and weld seams remain sharply resolved",
+        "brick patterns and bolt heads stay crisp",
+        "paint chips and oil stains retain clarity",
+        "expanded metal mesh patterns remain readable"
+      ]
+    },
+    "subway_station": {
+      "BIOME": [
+        {
+          "text": "underground metro platform",
+          "weight": 1.6
+        },
+        {
+          "text": "arched tile concourse",
+          "weight": 1.4
+        },
+        {
+          "text": "elevated rail platform",
+          "weight": 1.3
+        }
+      ],
+      "MICRO": [
+        {
+          "text": "tile mosaics, signage, and turnstiles",
+          "weight": 1.6
+        },
+        {
+          "text": "steel columns and riveted beams",
+          "weight": 1.4
+        },
+        {
+          "text": "bench seats, trash cans, and tactile paving",
+          "weight": 1.3
+        },
+        {
+          "text": "escalator steps and safety markings",
+          "weight": 1.2
+        }
+      ],
+      "ATMOS": [
+        {
+          "text": "fluorescent station lighting",
+          "weight": 1.3
+        },
+        {
+          "text": "cool subterranean air",
+          "weight": 1.2
+        },
+        {
+          "text": "soft echoes and faint haze",
+          "weight": 1.1
+        }
+      ],
+      "TEXTURE": [
+        "tile grout lines and patterns stay crisp",
+        "painted steel and rivets remain well-defined",
+        "sign typography and edge details remain readable",
+        "platform surface textures retain clarity"
+      ]
+    },
+    "data_center": {
+      "BIOME": [
+        {
+          "text": "server aisle with hot/cold containment",
+          "weight": 1.6
+        },
+        {
+          "text": "glass-walled network operations floor",
+          "weight": 1.3
+        }
+      ],
+      "MICRO": [
+        {
+          "text": "rack doors, cable looms, and patch panels",
+          "weight": 1.6
+        },
+        {
+          "text": "LED status lights and cable trays",
+          "weight": 1.4
+        },
+        {
+          "text": "overhead ducts and floor tiles",
+          "weight": 1.3
+        }
+      ],
+      "ATMOS": [
+        {
+          "text": "cool white lighting with low haze",
+          "weight": 1.3
+        },
+        {
+          "text": "clean environmental control",
+          "weight": 1.2
+        }
+      ],
+      "TEXTURE": [
+        "mesh doors, cable braids, and connector pins stay crisp",
+        "vent perforations and hex patterns remain readable",
+        "label text and port outlines retain clarity",
+        "floor tile seams and panel lines remain defined"
+      ]
+    },
+    "mountain_village": {
+      "BIOME": [
+        {
+          "text": "alpine village square",
+          "weight": 1.5
+        },
+        {
+          "text": "wooden chalets on hillside",
+          "weight": 1.4
+        },
+        {
+          "text": "stone bridge over mountain stream",
+          "weight": 1.3
+        }
+      ],
+      "MICRO": [
+        {
+          "text": "timber beams, shutters, and flower boxes",
+          "weight": 1.5
+        },
+        {
+          "text": "cobblestones and carved signage",
+          "weight": 1.4
+        },
+        {
+          "text": "stacked firewood and slate roofs",
+          "weight": 1.3
+        },
+        {
+          "text": "wrought iron railings and lamp posts",
+          "weight": 1.2
+        }
+      ],
+      "ATMOS": [
+        {
+          "text": "clear mountain air",
+          "weight": 1.3
+        },
+        {
+          "text": "soft valley fog lifting",
+          "weight": 1.2
+        },
+        {
+          "text": "late afternoon warm light",
+          "weight": 1.2
+        }
+      ],
+      "TEXTURE": [
+        "wood grain, knots, and carving remain readable",
+        "stonework joints and slate edges stay crisp",
+        "cobble patterns retain definition across the frame",
+        "painted signage and metalwork remain clear"
+      ]
+    },
+    "waterfalls_caves": {
+      "BIOME": [
+        {
+          "text": "basalt gorge with waterfalls",
+          "weight": 1.5
+        },
+        {
+          "text": "karst cave mouth",
+          "weight": 1.3
+        },
+        {
+          "text": "mossy ravine",
+          "weight": 1.3
+        }
+      ],
+      "MICRO": [
+        {
+          "text": "slick basalt columns and plunge pool",
+          "weight": 1.5
+        },
+        {
+          "text": "dripstone, flowstone, and wet rock",
+          "weight": 1.4
+        },
+        {
+          "text": "mist on ferns and stone steps",
+          "weight": 1.3
+        },
+        {
+          "text": "rope handrails and wooden walkways",
+          "weight": 1.2
+        }
+      ],
+      "ATMOS": [
+        {
+          "text": "cool spray and mist veil",
+          "weight": 1.4
+        },
+        {
+          "text": "filtered skylight and echo",
+          "weight": 1.3
+        },
+        {
+          "text": "low ambient rumble of water",
+          "weight": 1.2
+        }
+      ],
+      "TEXTURE": [
+        "wet rock glisten and moss fibers remain distinct",
+        "basalt facet lines stay crisp",
+        "dripstone and flow textures retain clarity",
+        "pool ripple patterns stay readable"
+      ]
+    },
+    "temple_asia": {
+      "BIOME": [
+        {
+          "text": "forest pagoda complex",
+          "weight": 1.5
+        },
+        {
+          "text": "stone temple courtyard",
+          "weight": 1.4
+        },
+        {
+          "text": "mountain monastery path",
+          "weight": 1.3
+        }
+      ],
+      "MICRO": [
+        {
+          "text": "stone lanterns and mossy steps",
+          "weight": 1.5
+        },
+        {
+          "text": "carved gates and tiled roofs",
+          "weight": 1.4
+        },
+        {
+          "text": "paper banners and wooden railings",
+          "weight": 1.3
+        },
+        {
+          "text": "guardian statues and incense burners",
+          "weight": 1.2
+        }
+      ],
+      "ATMOS": [
+        {
+          "text": "soft overcast light",
+          "weight": 1.3
+        },
+        {
+          "text": "mist curling through pines",
+          "weight": 1.3
+        },
+        {
+          "text": "warm lantern glow at dusk",
+          "weight": 1.2
+        }
+      ],
+      "TEXTURE": [
+        "carving details and tile edges remain sharp",
+        "wood joinery and grain stay legible",
+        "moss and stone joints retain definition",
+        "paper textures and painted lines remain clear"
+      ]
+    },
+    "wintry_forest": {
+      "BIOME": [
+        {
+          "text": "bare deciduous forest in winter",
+          "weight": 1.4
+        },
+        {
+          "text": "frozen riverside woods",
+          "weight": 1.3
+        }
+      ],
+      "MICRO": [
+        {
+          "text": "ice-sheathed branches and bramble",
+          "weight": 1.4
+        },
+        {
+          "text": "frosted stones and cattails",
+          "weight": 1.3
+        },
+        {
+          "text": "snow-dusted footbridge",
+          "weight": 1.2
+        }
+      ],
+      "ATMOS": [
+        {
+          "text": "silver overcast light",
+          "weight": 1.3
+        },
+        {
+          "text": "cold haze with sparkle",
+          "weight": 1.2
+        }
+      ],
+      "TEXTURE": [
+        "branch networks and twig tracery remain crisp",
+        "ice film and frost crystals stay distinct",
+        "reed fibers and snow grains retain clarity",
+        "bark and lichen patterns remain readable"
+      ]
+    }
+  }
+}
