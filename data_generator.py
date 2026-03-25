@@ -1,9 +1,8 @@
 import argparse 
+import csv
 import json
 import os
 import ssl
-import shutil
-
 import random
 from glob import glob
 import torch
@@ -31,13 +30,13 @@ app.prepare(ctx_id=0, det_size=(320, 320)) # Use ctx_id=0 for GPU, -1 for CPU
 MAX_RETRIES = 10
 
 def build_argparser():
-    parser = argparse.ArgumentParser(description="Generate realistic data from celeibrity faces and text prompts for realistic face in the scenes")
+    parser = argparse.ArgumentParser(description="Generate realistic data from celebrity faces and text prompts for realistic faces in the scenes")
 
 
     # Argument for CelebHQ dataset and prompt generation
     parser.add_argument("--celeb_hq_root", type=str, 
                         default="/netapp/output/aman.walia/data/CelebHQRefForRelease", 
-                        help="Path to the dierctory contaiing CelebHQ image dirs")
+                        help="Path to the directory containing CelebHQ image dirs")
     parser.add_argument("--celeb_hq_gender_metadata", type=str, 
                         default="/netapp/output/aman.walia/data/CelebHQRefForRelease/gender_map.json", 
                         help="Path to the gender meta file")
@@ -50,7 +49,7 @@ def build_argparser():
                         type=int,
                         default=3,
                         required=False,
-                        help="num of times to repeat wit same prompt")
+                        help="num of times to repeat with the same prompt")
     
     parser.add_argument("--force-gender", type=str, choices=["man", "woman"])
     parser.add_argument("--score_thresh", type=float, default=0.45)
@@ -62,6 +61,10 @@ def build_argparser():
                         type=str, 
                         default=None, 
                         help="(Legacy) combined JSON with multiple packs.")
+    parser.add_argument("--prompt_file", 
+                        type=str, 
+                        default=None, 
+                        help="Path to CSV containing prompt, identity, and file_id")
     
     
     # Argument for infiniteyou
@@ -115,16 +118,6 @@ def main():
         gender_data = json.load(f)
         
     # Prompt configuration
-    # cfg = GenConfig(
-    #     seed=args.seed,
-    #     num=1,
-    #     force_gender="person",
-    #     from_attr=None,
-    #     scene_packs_file=None,
-    #     scene_pack_filters=None,
-    #     diverse=True,
-    #     out=None,
-    # )
     cfg = GenConfig(
         seed=args.seed,
         num=1,
@@ -193,26 +186,46 @@ def main():
     # Prompt Generator
     generator = PromptGenerator(cfg)    
 
-    for i in range(args.num_samples):
-        # select path from img paths
-        fpath = random.choice(celeb_hq_image_paths)
+    if args.prompt_file is not None:
+        with open(args.prompt_file, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            prompt_metadata = list(reader)
         
-        # extract gender from json metadata
-        identity = fpath.split("/")[-2]
-        fid = fpath.split("/")[-1].split(".")[0]  # file id
+        # Ignore num-samples when prompt_file is provided
+        args.num_samples = len(prompt_metadata)
+    else:
+        prompt_metadata = None
+
+    for i in range(args.num_samples):
+        if prompt_metadata is not None:
+            row = prompt_metadata[i]
+            
+            prompt = row['prompt']
+            identity = row['identity']
+            file_id = row['file_id']
+            fid = file_id.split('.')[0]
+            fpath = os.path.join(args.celeb_hq_root, identity, file_id)
+        else:
+            # select path from img paths
+            fpath = random.choice(celeb_hq_image_paths)
+            
+            # extract gender from json metadata
+            identity = fpath.split("/")[-2]
+            fid = fpath.split("/")[-1].split(".")[0]  # file id
+            
         print(f"Processing identity: {identity}, file id: {fid}")
         try:
             gender = gender_data[identity].lower()
         except KeyError:
             gender = "person"
-            print("KeyError: , using default as person", identity)
+            print(f"KeyError: identity '{identity}' not found, using default as person")
             
         # set the gender
         if gender in ["man", "woman"]:
             cfg.force_gender = gender
 
-        
-        prompt = generator.generate_one()['prompt']
+        if prompt_metadata is None:
+            prompt = generator.generate_one()['prompt']
         print(f"Prompt: {prompt}")
         num_generated = 1
         num_trials = 0
