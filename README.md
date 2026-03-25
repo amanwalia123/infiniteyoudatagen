@@ -34,6 +34,14 @@ generate_data_multi_gpus.sh # Multi-GPU generation (screen sessions)
 generate_data_slurm.sh      # Multi-GPU generation (Slurm)
 ```
 
+## Model Zoo
+
+| InfiniteYou Version | Model Version | Base Model Trained with | Description |  
+| :---: | :---: | :---: | :---: |
+| [InfiniteYou-FLUX v1.0](https://huggingface.co/ByteDance/InfiniteYou) | [aes_stage2](https://huggingface.co/ByteDance/InfiniteYou/tree/main/infu_flux_v1.0/aes_stage2) | [FLUX.1-dev](https://huggingface.co/black-forest-labs/FLUX.1-dev) | Stage-2 model after SFT. Better text-image alignment and aesthetics. |
+| [InfiniteYou-FLUX v1.0](https://huggingface.co/ByteDance/InfiniteYou) | [sim_stage1](https://huggingface.co/ByteDance/InfiniteYou/tree/main/infu_flux_v1.0/sim_stage1) | [FLUX.1-dev](https://huggingface.co/black-forest-labs/FLUX.1-dev) | Stage-1 model before SFT. Higher identity similarity. |
+
+
 ## Requirements
 
 ### Dependencies
@@ -140,9 +148,30 @@ python data_generator.py \
 
 | Argument | Description |
 |---|---|
-| `--enable_realism_lora` | Enable the Realism LoRA |
-| `--enable_anti_blur_lora` | Enable the Anti-blur LoRA |
-| `--enable_anti_blur_lora2` | Enable alternative Anti-blur LoRA (scale 3.0) |
+| `--enable_realism_lora` | Enable the [XLabs Realism LoRA](https://civitai.com/models/631986/xlabs-flux-realism-lora?modelVersionId=706528) |
+| `--enable_anti_blur_lora` | Enable the [Anti-Blur FLUX LoRA](https://civitai.com/models/675581/anti-blur-flux-lora) |
+| `--enable_anti_blur_lora2` | Enable [Shakker-Labs AntiBlur](https://huggingface.co/Shakker-Labs/FLUX.1-dev-LoRA-AntiBlur) LoRA (scale 3.0) |
+
+#### Downloading LoRAs
+
+LoRA weights are expected in `<model_dir>/supports/optional_loras/`. Download them manually and place the `.safetensors` files in that directory.
+
+| LoRA | Source | Expected filename | Flag |
+|---|---|---|---|
+| XLabs Realism | [CivitAI](https://civitai.com/models/631986/xlabs-flux-realism-lora?modelVersionId=706528) | `flux_realism_lora.safetensors` | `--enable_realism_lora` |
+| Anti-Blur FLUX | [CivitAI](https://civitai.com/models/675581/anti-blur-flux-lora) | `flux_anti_blur_lora.safetensors` | `--enable_anti_blur_lora` |
+| Shakker-Labs AntiBlur | [HuggingFace](https://huggingface.co/Shakker-Labs/FLUX.1-dev-LoRA-AntiBlur) | `FLUX-dev-lora-AntiBlur.safetensors` | `--enable_anti_blur_lora2` |
+
+The Shakker-Labs LoRA can be downloaded via the CLI:
+
+```bash
+pip install huggingface-hub
+huggingface-cli download Shakker-Labs/FLUX.1-dev-LoRA-AntiBlur \
+    FLUX-dev-lora-AntiBlur.safetensors \
+    --local-dir "$MODEL_DIR/supports/optional_loras"
+```
+
+The CivitAI LoRAs must be downloaded manually from their pages and placed in the same directory.
 
 ### Runtime Options
 
