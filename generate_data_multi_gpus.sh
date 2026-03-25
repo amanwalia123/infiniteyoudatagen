@@ -30,7 +30,7 @@ for ((i=0; i<NUM_GPUS; i++)); do
     SCREEN_NAMES+=("$SCREEN_NAME")
     echo "Starting process for GPU $i in screen session '$SCREEN_NAME'..."
 
-    CMD="source \$PWD/\$VENV_DIR/bin/activate && CUDA_VISIBLE_DEVICES=\$i python3 data_generator.py --celeb_hq_root /group-volume/Aman-Contents/data/CelebHQRefForRelease \
+    CMD="source \$PWD/$VENV_DIR/bin/activate && CUDA_VISIBLE_DEVICES=$i python3 data_generator.py --celeb_hq_root /group-volume/Aman-Contents/data/CelebHQRefForRelease \
                                                                                                                       --celeb_hq_gender_metadata  gender_map.json \
                                                                                                                       --model_version sim_stage1 \
                                                                                                                       --enable_anti_blur_lora2 \
