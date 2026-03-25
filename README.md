@@ -1,191 +1,194 @@
-<div align="center">
+# InfiniteYou Data Generator
 
-## InfiniteYou: Flexible Photo Recrafting While Preserving Your Identity
+Generates identity-preserving synthetic face images at scale using the [InfiniteYou (InfU)](https://github.com/bytedance/InfiniteYou) pipeline built on [FLUX.1-dev](https://huggingface.co/black-forest-labs/FLUX.1-dev). Each generated image is quality-gated by an ArcFace similarity score so only images that faithfully preserve the source identity are kept.
 
-[**Liming Jiang**](https://liming-jiang.com/)&nbsp;&nbsp;&nbsp;&nbsp;
-[**Qing Yan**](https://scholar.google.com/citations?user=0TIYjPAAAAAJ)&nbsp;&nbsp;&nbsp;&nbsp;
-[**Yumin Jia**](https://www.linkedin.com/in/yuminjia/)&nbsp;&nbsp;&nbsp;&nbsp;
-[**Zichuan Liu**](https://scholar.google.com/citations?user=-H18WY8AAAAJ)&nbsp;&nbsp;&nbsp;&nbsp;
-[**Hao Kang**](https://scholar.google.com/citations?user=VeTCSyEAAAAJ)&nbsp;&nbsp;&nbsp;&nbsp;
-[**Xin Lu**](https://scholar.google.com/citations?user=mFC0wp8AAAAJ)<br />
-ByteDance Intelligent Creation<br />
-**ICCV 2025 (<span style="color:#F44336">Highlight</span>)**
+## Pipeline Overview
 
-<a href="https://bytedance.github.io/InfiniteYou"><img src="https://img.shields.io/static/v1?label=Project&message=Page&color=blue&logo=github-pages"></a> &ensp;
-<a href="https://arxiv.org/abs/2503.16418"><img src="https://img.shields.io/static/v1?label=ArXiv&message=Paper&color=darkred&logo=arxiv"></a> &ensp;
-<a href="https://huggingface.co/ByteDance/InfiniteYou"><img src="https://img.shields.io/static/v1?label=%F0%9F%A4%96%20Released&message=Models&color=green"></a> &ensp;
-<a href="https://github.com/bytedance/ComfyUI_InfiniteYou"><img src="https://img.shields.io/static/v1?label=%E2%9A%99%EF%B8%8F%20ComfyUI&message=Node&color=purple"></a> &ensp;
-<a href="https://huggingface.co/spaces/ByteDance/InfiniteYou-FLUX"><img src="https://img.shields.io/static/v1?label=%F0%9F%A4%97%20Hugging%20Face&message=Demo&color=orange"></a> &ensp;
+1. Load celebrity reference images from CelebHQ.
+2. Build a text prompt per sample — either randomly via `PromptGenerator`, or from a CSV file.
+3. Run the InfUFlux pipeline to produce an image matching the prompt while preserving the reference face identity.
+4. Compute an ArcFace cosine-similarity score between the reference and generated faces.
+5. Keep only images above the configurable similarity threshold and write metadata to disk.
 
-</div>
+## Repository Structure
 
-![teaser](./assets/teaser.jpg)
+```
+data_generator.py           # Main generation script
+prompt_generator.py         # Random prompt generation with scene packs
+utils.py                    # Utility helpers (IP address, server name)
+app.py                      # Local Gradio demo
+gender_map.json             # Identity → gender mapping for CelebHQ
+requirements.txt            # Python dependencies
+pipelines/
+  pipeline_infu_flux.py     # InfUFlux pipeline wrapper
+  pipeline_flux_infusenet.py # InfuseNet FLUX pipeline
+  resampler.py              # Resampler module
+scene_packs/
+  scene_packs_large1.json   # Extended scene descriptions for prompt generation
+splits/
+  train_metadata.csv        # Training split prompt CSV
+  eval_metadata.csv         # Evaluation split prompt CSV
+generate_data.sh            # Single-GPU generation script
+generate_data2.sh           # Single-GPU generation script (venv setup)
+generate_data_multi_gpus.sh # Multi-GPU generation (screen sessions)
+generate_data_slurm.sh      # Multi-GPU generation (Slurm)
+```
 
-> **Abstract:** *Achieving flexible and high-fidelity identity-preserved image generation remains formidable, particularly with advanced Diffusion Transformers (DiTs) like FLUX. We introduce **InfiniteYou (InfU)**, one of the earliest robust frameworks leveraging DiTs for this task. InfU addresses significant issues of existing methods, such as insufficient identity similarity, poor text-image alignment, and low generation quality and aesthetics. Central to InfU is InfuseNet, a component that injects identity features into the DiT base model via residual connections, enhancing identity similarity while maintaining generation capabilities. A multi-stage training strategy, including pretraining and supervised fine-tuning (SFT) with synthetic single-person-multiple-sample (SPMS) data, further improves text-image alignment, ameliorates image quality, and alleviates face copy-pasting. Extensive experiments demonstrate that InfU achieves state-of-the-art performance, surpassing existing baselines. In addition, the plug-and-play design of InfU ensures compatibility with various existing methods, offering a valuable contribution to the broader community.*
-
-
-## 🔥 News
-
-- [07/2025] 🔥 The [paper](https://arxiv.org/abs/2503.16418) of InfiniteYou is selected as ICCV 2025 (<span style="color:#F44336">**Highlight**</span>).
-
-- [06/2025] 🔥 The [paper](https://arxiv.org/abs/2503.16418) of InfiniteYou is accepted to ICCV 2025.
-
-- [04/2025] 🔥 The official [ComfyUI node](https://github.com/bytedance/ComfyUI_InfiniteYou) is released. Unofficial [ComfyUI contributions](https://github.com/bytedance/InfiniteYou#comfyui-nodes) are appreciated.
-
-- [04/2025] 🔥 Quantization and offloading [options](https://github.com/bytedance/InfiniteYou#memory-requirements) are provided to reduce the memory requirements for InfiniteYou-FLUX v1.0.
-
-- [03/2025] 🔥 The [code](https://github.com/bytedance/InfiniteYou), [model](https://huggingface.co/ByteDance/InfiniteYou), and [demo](https://huggingface.co/spaces/ByteDance/InfiniteYou-FLUX) of InfiniteYou-FLUX v1.0 are released.
-
-- [03/2025] 🔥 The [project page](https://bytedance.github.io/InfiniteYou) of InfiniteYou is created.
-
-- [03/2025] 🔥 The [paper](https://arxiv.org/abs/2503.16418) of InfiniteYou is released on arXiv.
-
-
-## 💡 Important Usage Tips
-
-- We released two model variants of InfiniteYou-FLUX v1.0: [aes_stage2](https://huggingface.co/ByteDance/InfiniteYou/tree/main/infu_flux_v1.0/aes_stage2) and [sim_stage1](https://huggingface.co/ByteDance/InfiniteYou/tree/main/infu_flux_v1.0/sim_stage1). The `aes_stage2` is our model after SFT, which is used by default for better text-image alignment and aesthetics. For higher ID similarity, please try `sim_stage1` (using `--model_version` to switch). More details can be found in our [paper](https://arxiv.org/abs/2503.16418).
-
-- To better fit specific personal needs, we find that two arguments are highly useful to adjust: <br />`--infusenet_conditioning_scale` (default: `1.0`) and `--infusenet_guidance_start` (default: `0.0`). Usually, you may NOT need to adjust them. If necessary, start by trying a slightly larger `--infusenet_guidance_start` (*e.g.*, `0.1`) only (especially helpful for `sim_stage1`). If still not satisfactory, then try a slightly smaller `--infusenet_conditioning_scale` (*e.g.*, `0.9`).
-
-- We also provided two LoRAs ([Realism](https://civitai.com/models/631986?modelVersionId=706528) and [Anti-blur](https://civitai.com/models/675581/anti-blur-flux-lora)) to enable additional usage flexibility. If needed, try `Realism` only first.  They are *entirely optional*, which are examples to try but are NOT used in our paper.
-
-- If the generated gender does not align with your preferences, try adding specific words in the text prompt, such as 'a man', 'a woman', *etc*. We encourage users to use inclusive and respectful language.
-
-
-## :european_castle: Model Zoo
-
-| InfiniteYou Version | Model Version | Base Model Trained with | Description |  
-| :---: | :---: | :---: | :---: |
-| [InfiniteYou-FLUX v1.0](https://huggingface.co/ByteDance/InfiniteYou) | [aes_stage2](https://huggingface.co/ByteDance/InfiniteYou/tree/main/infu_flux_v1.0/aes_stage2) | [FLUX.1-dev](https://huggingface.co/black-forest-labs/FLUX.1-dev) | Stage-2 model after SFT. Better text-image alignment and aesthetics. |
-| [InfiniteYou-FLUX v1.0](https://huggingface.co/ByteDance/InfiniteYou) | [sim_stage1](https://huggingface.co/ByteDance/InfiniteYou/tree/main/infu_flux_v1.0/sim_stage1) | [FLUX.1-dev](https://huggingface.co/black-forest-labs/FLUX.1-dev) | Stage-1 model before SFT. Higher identity similarity. |
-
-
-## 🔧 Requirements and Installation
+## Requirements
 
 ### Dependencies
 
-Simply run this one-line command to install (feel free to create a `python3` virtual environment before you run):
-
 ```bash
+python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Memory Requirements 
+### Hardware
 
-- **Full-performance**: The original `bf16` model inference requires a **peak VRAM** of around **43GB**.
+| Configuration | Peak VRAM |
+|---|---|
+| Full `bf16` inference | ~43 GB |
+| `--cpu_offload` | ~30 GB |
+| `--quantize_8bit` | ~24 GB |
+| `--cpu_offload --quantize_8bit` | ~16 GB |
 
-- **Fast CPU offloading**: By specifying only `--cpu_offload` in [test.py](https://github.com/bytedance/InfiniteYou/blob/main/test.py#L44), the **peak VRAM** is reduced to around **30GB** with **NO** performance degradation.
+## Quick Start
 
-- **8-bit quantization**: By specifying only `--quantize_8bit` in [test.py](https://github.com/bytedance/InfiniteYou/blob/main/test.py#L44), the **peak VRAM** is reduced to around **24GB** with performance remaining very similar.
-
-- **Combining fast CPU offloading and 8-bit quantization**: By specifying both `--cpu_offload` and <br />`--quantize_8bit`, the **peak VRAM** is further reduced to around **16GB** with performance remaining very similar.
-
-If you want to use our models but only have a GPU with even less VRAM, please further refer to [Diffusers memory reduction tips](https://huggingface.co/docs/diffusers/en/optimization/memory), where some more aggressive strategies may be helpful. Community contributions are also welcome.
-
-
-## ⚡️ Quick Inference
-
-### Local Inference Script
+### Single GPU
 
 ```bash
-python test.py --id_image ./assets/examples/man.jpg --prompt "A man, portrait, cinematic" --out_results_dir ./results
+python data_generator.py \
+    --celeb_hq_root /path/to/CelebHQRefForRelease \
+    --prompt_file splits/train_metadata.csv \
+    --output_dir ./output \
+    --model_version sim_stage1 \
+    --num-repeat 3
 ```
 
-<details>
-<summary style='font-size:20px'><b><i>Explanation of all the arguments (click to expand!)</i></b></summary>
+### Multi-GPU (screen sessions)
 
-- Input and output:
-  - `--id_image (str)`: The path to the input identity (ID) image. Default: `./assets/examples/man.jpg`.
-  - `--prompt (str)`: The text prompt for image generation. Default: `A man, portrait, cinematic`.
-  - `--out_results_dir (str)`: The path to the output directory to save the generated results. Default: `./results`.
-  - `--control_image (str or None)`: The path to the control image \[*optional*\] to extract five facical keypoints to control the generation. Default: `None`.
-  - `--base_model_path (str)`: The huggingface or local path to the base model. Default: `black-forest-labs/FLUX.1-dev`.
-  - `--model_dir (str)`: The path to the InfiniteYou model directory. Default: `ByteDance/InfiniteYou`.
-- Version control:
-  - `--infu_flux_version (str)`: InfiniteYou-FLUX version: currently only `v1.0` is supported. Default: `v1.0`.
-  - `--model_version (str)`: The model variant to use: `aes_stage2` | `sim_stage1`. Default: `aes_stage2`.
-- General inference arguments:
-  - `--cuda_device (int)`: The cuda device ID to use. Default: `0`.
-  - `--seed (int)`: The seed for reproducibility (0 for random). Default: `0`.
-  - `--guideance_scale (float)`: The guidance scale for the diffusion process. Default: `3.5`.
-  - `--num_steps (int)`: The number of inference steps. Default: `30`.
-- InfiniteYou-specific arguments:
-  - `--infusenet_conditioning_scale (float)`: The scale for the InfuseNet conditioning. Default: `1.0`.
-  - `--infusenet_guidance_start (float)`: The start point for the InfuseNet guidance injection. Default: `0.0`.
-  - `--infusenet_guidance_end (float)`: The end point for the InfuseNet guidance injection. Default: `1.0`.
-- Optional LoRAs:
-  - `--enable_realism_lora (store_true)`: Whether to enable the Realism LoRA. Default: `False`.
-  - `--enable_anti_blur_lora (store_true)`: Whether to enable the Anti-blur LoRA. Default: `False`.
-- Memory reduction options:
-  - `--quantize_8bit (store_true)`: Whether to quantize the model to the 8-bit format. Default: `False`.
-  - `--cpu_offload (store_true)`: Whether to use fast CPU offloading. Default: `False`.
+```bash
+bash generate_data_multi_gpus.sh
+```
 
-</details>
+Launches one `screen` session per GPU. Each GPU processes a non-overlapping slice of the prompt CSV using `--num_gpus` and `--cuda_device` for round-robin partitioning.
 
+### Multi-GPU (Slurm)
 
-### Local Gradio Demo
+```bash
+sbatch generate_data_slurm.sh
+```
+
+### Gradio Demo
 
 ```bash
 python app.py
 ```
 
-### Online Hugging Face Demo
+## Resuming Interrupted Runs
 
-We appreciate the GPU grant from the Hugging Face team. 
-You can also try our [InfiniteYou-FLUX Hugging Face demo](https://huggingface.co/spaces/ByteDance/InfiniteYou-FLUX) online.
+Generation can be resumed after a crash or preemption with `--resume`:
 
-### ComfyUI Nodes
+```bash
+python data_generator.py \
+    --prompt_file splits/train_metadata.csv \
+    --output_dir ./output \
+    --num_gpus 4 \
+    --cuda_device 0 \
+    --resume
+```
 
-- **Official ComfyUI native node implementation**
-  - [bytedance/ComfyUI_InfiniteYou](https://github.com/bytedance/ComfyUI_InfiniteYou)
+**How it works:**
 
-- **Unofficial contributions**
-  - [ZenAI-Vietnam/ComfyUI_InfiniteYou](https://github.com/ZenAI-Vietnam/ComfyUI_InfiniteYou)
-  - [katalist-ai/ComfyUI-InfiniteYou](https://github.com/katalist-ai/ComfyUI-InfiniteYou)
-  - [niknah/ComfyUI-InfiniteYou](https://github.com/niknah/ComfyUI-InfiniteYou)
-  - [game4d/ComfyUI-BDsInfiniteYou](https://github.com/game4d/ComfyUI-BDsInfiniteYou)
-  - [GGUF version](https://civitai.com/models/1424364?modelVersionId=1617144) (16GB VRAM) and [Christmas Toy LoRA](https://civitai.com/models/1466015?modelVersionId=1658038) by [@MegaCocos](https://github.com/MegaCocos)
+- Requires `--prompt_file` — the CSV is the deterministic source of truth (no separate plan file needed).
+- Each GPU takes every Nth row (round-robin by `--cuda_device`), so work is partitioned without overlap.
+- Each GPU writes to its own output directory, so there are no file conflicts between concurrent processes.
+- On `--resume`, the script reads the existing `metadata.json` to discover which `(identity, file_id, repeat)` combinations are already done and skips them.
+- Metadata writes use atomic file operations (write-to-temp + `os.replace`) to prevent corruption from mid-write kills.
 
+## CLI Arguments
 
-## 🆚 Comparison with State-of-the-Art Relevant Methods
+### Data & Prompt Options
 
-![comparative_results](./assets/comparative_results.jpg)
+| Argument | Type | Default | Description |
+|---|---|---|---|
+| `--celeb_hq_root` | str | *(see code)* | Path to CelebHQ image directories |
+| `--celeb_hq_gender_metadata` | str | `gender_map.json` | Path to the gender metadata JSON |
+| `--prompt_file` | str | None | CSV with `prompt`, `identity`, `file_id` columns |
+| `--num-samples` | int | 500 | Number of samples to generate (random mode only) |
+| `--num-repeat` | int | 3 | Successful repeats per sample |
+| `--score_thresh` | float | 0.45 | Minimum ArcFace similarity to keep an image |
+| `--force-gender` | str | None | Force gender: `man` or `woman` |
+| `--scene-packs-file` | str | None | JSON with additional scene pack descriptions |
 
-Qualitative comparison results of InfU with the state-of-the-art baselines, FLUX.1-dev IP-Adapter and PuLID-FLUX. The identity similarity and text-image alignment of the results generated by FLUX.1-dev IP-Adapter (IPA) are inadequate. PuLID-FLUX generates images with decent identity similarity. However, it suffers from poor text-image alignment (Columns 1, 2, 4), and the image quality (e.g., bad hands in Column 5) and aesthetic appeal are degraded. In addition, the face copy-paste issue of PuLID-FLUX is evident (Column 5). In comparison, the proposed InfU outperforms the baselines across all dimensions.
+### Model & Inference Options
 
+| Argument | Type | Default | Description |
+|---|---|---|---|
+| `--base_model_path` | str | `black-forest-labs/FLUX.1-dev` | Base diffusion model |
+| `--model_dir` | str | *(see code)* | Path to InfiniteYou model weights |
+| `--model_version` | str | `aes_stage2` | `aes_stage2` (better aesthetics) or `sim_stage1` (higher ID similarity) |
+| `--guidance_scale` | float | 3.5 | Classifier-free guidance scale |
+| `--num_steps` | int | 30 | Diffusion inference steps |
+| `--infusenet_conditioning_scale` | float | 1.0 | InfuseNet conditioning strength |
+| `--infusenet_guidance_start` | float | 0.0 | InfuseNet injection start point |
+| `--infusenet_guidance_end` | float | 1.0 | InfuseNet injection end point |
+| `--img_size` | int int | `1152 1024` | Output image size (width height) |
+| `--control_image` | str | None | Optional control image for facial keypoints |
 
-## ⚙️ Plug-and-Play Property with Off-the-Shelf Popular Approaches
+### LoRA Options (optional)
 
-![plug_and_play](./assets/plug_and_play.jpg)
+| Argument | Description |
+|---|---|
+| `--enable_realism_lora` | Enable the Realism LoRA |
+| `--enable_anti_blur_lora` | Enable the Anti-blur LoRA |
+| `--enable_anti_blur_lora2` | Enable alternative Anti-blur LoRA (scale 3.0) |
 
-InfU features a desirable plug-and-play design, compatible with many existing methods. It naturally supports base model replacement with any variants of FLUX.1-dev, such as FLUX.1-schnell for more efficient generation (e.g., in 4 steps). The compatibility with ControlNets and LoRAs provides more controllability and flexibility for customized tasks. Notably, the compatibility with OminiControl extends our potential for multi-concept personalization, such as interacted identity (ID) and object personalized generation. InfU is also compatible with IP-Adapter (IPA) for stylization of personalized images, producing decent results when injecting style references via IPA. Our plug-and-play feature may extend to even more approaches, providing valuable contributions to the broader community.
+### Runtime Options
 
+| Argument | Type | Default | Description |
+|---|---|---|---|
+| `--cuda_device` | int | 0 | GPU device ID |
+| `--num_gpus` | int | 1 | Total GPUs for work partitioning |
+| `--seed` | int | 0 | Random seed (0 = random) |
+| `--output_dir` | str | None | Output directory (auto-derived if omitted) |
+| `--resume` | flag | — | Resume from existing `metadata.json` |
+| `--quantize_8bit` | flag | — | 8-bit model quantization |
+| `--cpu_offload` | flag | — | CPU offloading to reduce VRAM |
 
-## 📜 Disclaimer and Licenses
+## Prompt CSV Format
 
-The images used in this repository and related demos are sourced from consented subjects or generated by the models. These pictures are intended solely to showcase the capabilities of our research. If you have any concerns, please feel free to contact us, and we will promptly remove any inappropriate content.
+The `--prompt_file` CSV must have these columns:
 
-The use of the released code, model, and demo must strictly adhere to the respective licenses. Our code is released under the [Apache License 2.0](./LICENSE), and our model is released under the [Creative Commons Attribution-NonCommercial 4.0 International Public License](https://huggingface.co/ByteDance/InfiniteYou/blob/main/LICENSE) for academic research purposes only. Any manual or automatic downloading of the face models from [InsightFace](https://github.com/deepinsight/insightface), the [FLUX.1-dev](https://huggingface.co/black-forest-labs/FLUX.1-dev) base model, LoRAs ([Realism](https://civitai.com/models/631986?modelVersionId=706528) and [Anti-blur](https://civitai.com/models/675581/anti-blur-flux-lora)), *etc.*, must follow their original licenses and be used only for academic research purposes.
+```csv
+prompt,identity,file_id
+"A man, portrait, cinematic",00071,15.png
+"A woman in a forest",00233,0.png
+```
 
-This research aims to positively impact the field of Generative AI. Any usage of this method must be responsible and comply with local laws. The developers do not assume any responsibility for any potential misuse.
+- **prompt** — text prompt for the diffusion model
+- **identity** — subdirectory name under `--celeb_hq_root`  
+- **file_id** — filename of the reference image within that subdirectory
 
+## Output
 
-## 🤗 Acknowledgments
+Each run produces:
 
-We sincerely acknowledge the insightful discussions from Stathi Fotiadis, Min Jin Chong, Xiao Yang, Tiancheng Zhi, Jing Liu, and Xiaohui Shen. We genuinely appreciate the help from Jincheng Liang and Lu Guo with our user study and qualitative evaluation.
+- **Generated images**: `iden_{identity}_img_{fid}_sample_{N}_repeat_{R}.png`
+- **metadata.json**: Append-only JSON array with one entry per accepted image:
 
-
-## 📖 Citation
-
-If you find InfiniteYou useful for your research or applications, please cite our paper:
-
-```bibtex
-@inproceedings{jiang2025infiniteyou,
-  title={{InfiniteYou}: Flexible Photo Recrafting While Preserving Your Identity},
-  author={Jiang, Liming and Yan, Qing and Jia, Yumin and Liu, Zichuan and Kang, Hao and Lu, Xin},
-  booktitle={ICCV},
-  year={2025}
+```json
+{
+    "image_name": "iden_00071_img_15_sample_1_repeat_1.png",
+    "prompt": "A man, portrait, cinematic",
+    "identity": "00071",
+    "file_id": "15.png",
+    "trial": 1,
+    "repeat": 1,
+    "similarity_score": 0.62
 }
 ```
 
-We also appreciate it if you could give a star :star: to this repository. Thanks a lot!
+## License
+
+Code is released under the [Apache License 2.0](./LICENSE). Model weights follow their respective upstream licenses.
