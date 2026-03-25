@@ -37,6 +37,8 @@ for ((i=0; i<NUM_GPUS; i++)); do
                                                                                                                       --num-samples $NUM_SAMPLES_PER_GPU \
                                                                                                                       --num-repeat 3 \
                                                                                                                       --cuda_device $i \
+                                                                                                                      --num_gpus $NUM_GPUS \
+                                                                                                                      --resume \
                                                                                                                       --scene-packs-file scene_packs/scene_packs_large1.json \
                                                                                                                       --prompt_file splits/train_metadata.csv"
 

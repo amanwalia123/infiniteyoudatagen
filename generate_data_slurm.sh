@@ -55,6 +55,8 @@ for PROMPT_FILE in "${PROMPT_FILES[@]}"; do
             --num-samples $NUM_SAMPLES_PER_GPU \
             --num-repeat 3 \
             --cuda_device $i \
+            --num_gpus $NUM_GPUS \
+            --resume \
             --scene-packs-file scene_packs/scene_packs_large1.json \
             --prompt_file $PROMPT_FILE &
     done
