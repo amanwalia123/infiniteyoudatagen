@@ -1,1 +1,5 @@
 *.ipynb
+.venv/
+__pycache__/   
+*.pyc
+pipelines/__pycache__/ 
