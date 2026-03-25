@@ -3,6 +3,7 @@ set -euo pipefail
 
 VENV_DIR=".venv"
 NUM_SAMPLES_PER_GPU=700
+MODEL_DIR="${MODEL_DIR:-./models}"
 SCREEN_NAMES=()
 
 : "${INSTANCE_RANK:?Must set INSTANCE_RANK}"
@@ -58,6 +59,7 @@ cd "$PWD"
 source "$PWD/$VENV_DIR/bin/activate"
 export CUDA_VISIBLE_DEVICES=$i
 python3 data_generator.py \
+    --model_dir $MODEL_DIR \
     --celeb_hq_root /group-volume/Aman-Contents/data/CelebHQRefForRelease \
     --celeb_hq_gender_metadata gender_map.json \
     --model_version sim_stage1 \
