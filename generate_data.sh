@@ -12,6 +12,7 @@ CUDA_DEVICE="${CUDA_DEVICE:-0}"
 PROMPT_FILE="${PROMPT_FILE:-splits/train_metadata.csv}"
 CELEB_HQ_ROOT="${CELEB_HQ_ROOT:-/group-volume/Aman-Contents/data/CelebHQRefForRelease}"
 GENDER_METADATA="${GENDER_METADATA:-gender_map.json}"
+MODEL_DIR="${MODEL_DIR:-./models}"
 MODEL_VERSION="${MODEL_VERSION:-sim_stage1}"
 SCENE_PACKS_FILE="${SCENE_PACKS_FILE:-scene_packs/scene_packs_large1.json}"
 NUM_REPEAT="${NUM_REPEAT:-3}"
@@ -44,6 +45,7 @@ python -m pip install -r requirements.txt
 export CUDA_VISIBLE_DEVICES="$PHYSICAL_GPU"
 
 python3 data_generator.py \
+    --model_dir "$MODEL_DIR" \
     --celeb_hq_root "$CELEB_HQ_ROOT" \
     --celeb_hq_gender_metadata "$GENDER_METADATA" \
     --model_version "$MODEL_VERSION" \
