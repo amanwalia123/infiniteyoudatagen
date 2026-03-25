@@ -237,7 +237,7 @@ def main():
     # Derive a server-specific output directory when none is provided.
     if args.output_dir is None:
         if server_name == "lambda":
-            root = "/netapp/output/aman.walia/data/infiniteyou_face_dataset"
+            root = "/netapp/output/aman.walia/data/infiniteyou_face_dataset2"
         elif server_name == "MLP":
             root = "/group-volume/TorAIC-Image-Quality/Aman-Contents/data/infiniteyou_face_dataset"
         elif server_name == "SPACE":
