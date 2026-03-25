@@ -205,7 +205,7 @@ def build_argparser() -> argparse.Namespace:
 
     # --- InfiniteYou model & inference arguments ---
     parser.add_argument("--base_model_path", default="black-forest-labs/FLUX.1-dev")
-    parser.add_argument("--model_dir", default="/group-volume/Aman-Contents/InfiniteYou")
+    parser.add_argument("--model_dir", default="./models")
     parser.add_argument("--control_image", default=None, help="Control image [optional].")
     parser.add_argument(
         "--infu_flux_version",
@@ -484,8 +484,6 @@ def main() -> None:
 
     # Optionally attach LoRA adapters.
     lora_dir = os.path.join(args.model_dir, "supports", "optional_loras")
-    if not os.path.exists(lora_dir):
-        lora_dir = "/group-volume/Aman-Contents/InfiniteYou/supports/optional_loras"
 
     loras = []
     if args.enable_realism_lora:
