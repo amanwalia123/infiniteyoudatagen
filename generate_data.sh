@@ -5,8 +5,15 @@
 # and that the necessary dependencies are installed.
 
 # Set the Python interpreter to use
-conda init
-conda activate base
+VENV_DIR=".venv"
+if [ ! -d "$VENV_DIR" ]; then
+    echo "Creating virtual environment in $VENV_DIR..."
+    python3 -m venv $VENV_DIR
+fi
+
+source $VENV_DIR/bin/activate
+echo "Installing requirements..."
+pip install -r requirements.txt
 
 # Run the data generation script with the specified arguments
 python data_generator.py \

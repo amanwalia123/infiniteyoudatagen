@@ -16,7 +16,7 @@ from insightface.app import FaceAnalysis
 
 from utils import get_ip_address, get_server_name
 from pipelines.pipeline_infu_flux import InfUFluxPipeline
-from prompt_generator2 import GenConfig, PromptGenerator
+from prompt_generator import GenConfig, PromptGenerator
 
 # Hugging face related SSL error fix
 os.environ['CURL_CA_BUNDLE'] = ''
