@@ -38,7 +38,7 @@ def build_argparser():
                         default="/netapp/output/aman.walia/data/CelebHQRefForRelease", 
                         help="Path to the directory containing CelebHQ image dirs")
     parser.add_argument("--celeb_hq_gender_metadata", type=str, 
-                        default="/netapp/output/aman.walia/data/CelebHQRefForRelease/gender_map.json", 
+                        default="gender_map.json", 
                         help="Path to the gender meta file")
     parser.add_argument("--num-samples",
                         type=int,
